@@ -89,6 +89,7 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
+evn_odman/
 
 # Spyder project settings
 .spyderproject
