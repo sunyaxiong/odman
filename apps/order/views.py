@@ -25,7 +25,7 @@ from .models import Consumer
 from .models import ApplyVerifyCode
 from .forms import RegisterForm, OrderCreatForm
 from lib import excel2
-from odman.settings import PAGE_LIMIT
+from odman.settings import PAGE_LIMIT, WEB_HOST, WEB_PORT
 
 
 def my_login(request):
@@ -92,7 +92,7 @@ def register(request):
                         com_name=data.get("com_name"),
                     )
                     # 激活邮件：预留邮箱审核并激活
-                    link = f"http://127.0.0.1:9000/profile/confirm/{user.id}"
+                    link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/confirm/"
                     content = f"管理员, 您好：\n 工单系统内，代理商：{channel.name}下有用户正在进行注册，请审批\n \
                         用户信息如下：\n \
                         用户名： {user.username}\n \
@@ -202,7 +202,7 @@ def profile_confirm(request, pk):
         if not user.is_staff:
             user.is_staff = 1
             user.save()
-            login_link = "http://127.0.0.1:9000/accounts/login"
+            login_link = f"http://{WEB_HOST}:{WEB_PORT}/accounts/login"
             send_mail(
                 "账户激活提醒",
                 f"尊敬的 {user.username}: \n 您的账户已经激活，请登陆并访问工单系统： {login_link}",
@@ -351,7 +351,6 @@ def channel_update(request, pk):
         channel.org_ids = org_id
         channel.save()
         messages.success(request, f"订阅id维护成功；用户： {username}, 创建成功")
-        # TODO 检查用户名是否存在？存在：提醒不要重复创建；不存在：创建用户，维护订阅ID-邮箱，同时创建配置文件
 
     return HttpResponseRedirect(f"/order/channel/{pk}")
 

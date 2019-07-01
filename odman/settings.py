@@ -179,3 +179,8 @@ EMAIL_HOST_USER = 'support@ecscloud.com'
 EMAIL_HOST_PASSWORD = 'ECSchin@2016'
 EMAIL_SUBJECT_PREFIX = u'[vstecs.com]'
 EMAIL_USE_TLS = True
+
+
+# odman conf
+WEB_HOST = "111.13.61.165"
+WEB_PORT = "10001"
