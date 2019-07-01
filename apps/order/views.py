@@ -92,7 +92,7 @@ def register(request):
                         com_name=data.get("com_name"),
                     )
                     # 激活邮件：预留邮箱审核并激活
-                    link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/confirm/"
+                    link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/"
                     content = f"管理员, 您好：\n 工单系统内，代理商：{channel.name}下有用户正在进行注册，请审批\n \
                         用户信息如下：\n \
                         用户名： {user.username}\n \
