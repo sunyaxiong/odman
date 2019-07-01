@@ -20,12 +20,12 @@ from django.views.static import serve
 
 from odman import settings
 from apps.order.views import my_login, my_logout, register, profile, profile_update, profile_confirm,\
-    reset_passwd, apply_verify_code
+    reset_passwd, apply_verify_code, order_list
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', my_login),
+    path('', order_list),
     path('accounts/login/', my_login),
     path('logout/', my_logout),
     path('accounts/register/', register),

@@ -30,8 +30,8 @@ from odman.settings import PAGE_LIMIT
 
 def my_login(request):
 
-    if request.user:
-        return HttpResponseRedirect("/order/orders/")
+    if request.method == "GET":
+        return render(request, 'login.html', locals())
     if request.method == "POST":
         username = request.POST.get("username")
         passwd = request.POST.get("password")
@@ -52,7 +52,6 @@ def my_login(request):
 
         return HttpResponseRedirect('/order/orders/')
 
-    return render(request, 'login.html', locals())
 
 
 def my_logout(request):
