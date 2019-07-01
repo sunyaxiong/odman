@@ -1,4 +1,4 @@
-Django==2.1.4
+Django==2.1.5
 django-suit==0.2.26
 pytz==2019.1
 xlrd==1.2.0
