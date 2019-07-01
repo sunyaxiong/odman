@@ -25,6 +25,7 @@ from apps.order.views import my_login, my_logout, register, profile, profile_upd
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', my_login),
     path('accounts/login/', my_login),
     path('logout/', my_logout),
     path('accounts/register/', register),

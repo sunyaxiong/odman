@@ -29,6 +29,9 @@ from odman.settings import PAGE_LIMIT
 
 
 def my_login(request):
+
+    if request.user:
+        return HttpResponseRedirect("/order/orders/")
     if request.method == "POST":
         username = request.POST.get("username")
         passwd = request.POST.get("password")
