@@ -1,0 +1,105 @@
+{% extends 'starter.html' %}
+{% block Styles %}
+
+{% endblock %}
+{% block Content %}
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">{{ page_info.table_title }}</h3>
+          {% if user.userprofile.role == 2 %}
+            <a href="/order/create/">提交工单</a>
+          {% endif %}
+{#          {% include 'modal/modal_import_channel.html' %}#}
+          <div class="box-tools">
+            <div class="input-group input-group-sm" style="width: 150px;">
+              <input type="text" name="table_search" id="table_search" class="form-control pull-right"
+                     placeholder="Search">
+              <div class="input-group-btn">
+                <button type="submit" id="search" class="btn btn-default"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tr>
+              <th>ID</th>
+              <th>表单号</th>
+              <th>标题</th>
+              <th>申请人</th>
+              <th>渠道商</th>
+              <th>工单类型</th>
+              <th>状态</th>
+              <th>提交时间</th>
+            </tr>
+            {% for i in contacts %}
+            <tr>
+              <td>{{ i.id }}</td>
+              <td><a href="/order/order/{{ i.id }}">{{ i.number }}</a></td>
+              <td>{{ i.title }}</td>
+              {% if i.proposer.userprofile.cn_name %}
+                <td><a href="/profile/{{ i.proposer.userprofile.id }}">{{ i.proposer.userprofile.cn_name }}</a></td>
+              {% else %}
+                <td><a href="/profile/{{ i.proposer.userprofile.id }}">{{ i.proposer.username }}</a></td>
+              {% endif %}
+              <td>{{ i.channel.name }}</td>
+              <td>{{ i.get_classify_display }}</td>
+              <td><span class="label label-success">{{ i.get_status_display }}</span></td>
+              <td>{{ i.dt_created }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+          <ul class="pagination pagination-sm no-margin pull-right">
+            {% if contacts.has_previous %}
+            <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+            {% endif %}
+            {% if page < 1 %}
+              <li><a href="?page=1">1</a></li>
+            {% elif page > paginator.num_pages %}
+              <li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+            {% else %}
+              <li><a href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+            <span class="current">
+              Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+            </span>
+            {% if contacts.has_next %}
+            <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+{% endblock %}
+{% block Script %}
+  <!-- Slimscroll -->
+  <script src="/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- FastClick -->
+  <script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/dist/js/demo.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#search").click(function(){
+        let q = $("#table_search").val();
+        let url_arr = document.URL.split('?');
+
+        // 判断当前是否存在参数
+        if (url_arr[1]){
+            window.location.href=document.URL + "&q=" + q;
+        } else {
+            window.location.href=url_arr[0] = "?q=" +q;
+        }
+      });
+    });
+  </script>
+{% endblock %}

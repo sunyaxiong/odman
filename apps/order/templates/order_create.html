@@ -1,0 +1,206 @@
+{% extends 'starter.html' %}
+{% block Styles %}
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/static/dist/css/skins/_all-skins.min.css">
+{% endblock %}
+{% block Content %}
+<!-- SELECT2 EXAMPLE -->
+<form role="form" action="/order/create/" method="post" enctype="multipart/form-data">{% csrf_token %}
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">{{ user.userprofile.channel.name }}</h3>
+  </div>
+  <!-- /.box-header -->
+{#  <div class="box-body">#}
+{#    <div class="row">#}
+{#      <div class="col-md-6">#}
+{#        <div class="input-group">#}
+{#          <span class="input-group-addon"><i class="fa fa-user">  姓名</i></span>#}
+{#          <input disabled="disabled" class="form-control" placeholder="姓名" value={{user.userprofile.cn_name}}>#}
+{#        </div>#}
+{#        <!--<div class="form-group">-->#}
+{#          <!--<label>工单提交人: </label>-->#}
+{#          <!--<input class="form-control input-sm" value={{ user.userprofile.cn_name }}>-->#}
+{#          <!--&lt;!&ndash;此处填写1部分内容&ndash;&gt;-->#}
+{#          <!--&lt;!&ndash;<input class="form-control input-append" disabled="disabled" value={{ user.username }}>&ndash;&gt;-->#}
+{#        <!--</div>-->#}
+{#        <!-- /.form-group -->#}
+{#        <div class="input-group">#}
+{#          <span class="input-group-addon"><i class="fa fa-home">公司</i></span>#}
+{#          <input disabled="disabled" class="form-control" placeholder="公司" value={{user.userprofile.channel.name}}>#}
+{#        </div>#}
+{#        <!-- /.form-group -->#}
+{#      </div>#}
+{#      <!-- /.col -->#}
+{#      <div class="col-md-6">#}
+{#        <div class="input-group">#}
+{#          <span class="input-group-addon"><i class="fa fa-phone"> 电话</i></span>#}
+{#          <input disabled="disabled" class="form-control" placeholder="电话" value={{user.userprofile.phone}}>#}
+{#        </div>#}
+{#        <!-- /.form-group -->#}
+{#        <div class="input-group">#}
+{#          <span class="input-group-addon"><i class="fa fa-envelope">邮箱</i></span>#}
+{#          <input disabled="disabled" class="form-control" placeholder="邮箱" value={{user.userprofile.email}}>#}
+{#        </div>#}
+{#        <!-- /.form-group -->#}
+{#      </div>#}
+{#      <!-- /.col -->#}
+{#    </div>#}
+{#    <!-- /.row -->#}
+{#  </div>#}
+  <!-- /.box-body -->
+  <!--<div class="box-footer">-->
+    <!--Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about-->
+    <!--the plugin.-->
+  <!--</div>-->
+</div>
+<div class="box box-default">
+  <div class="box-header with-border">
+    <h3 class="box-title">工单正文</h3>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>主题</label>
+          <!--<label class="form-control label">{{ user.userprofile.username }}</label>-->
+          <!--此处填写1部分内容-->
+          <input class="form-control input-append" name="title">
+        </div>
+        <!-- /.form-group -->
+        <!-- /.form-group -->
+      </div>
+      <!-- /.col -->
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>分类</label>
+          <!--// 此处填写3部分内容-->
+          <select class="form-control select2-choices required" name="classify">
+            <option selected></option>
+            <option value="1">商务</option>
+            <option value="2">技术</option>
+          </select>
+        </div>
+        <!-- /.form-group -->
+        <!--<div class="form-group">-->
+          <!--<label>联系人邮箱</label>-->
+          <!--&lt;!&ndash;// 此处填写4部分内容&ndash;&gt;-->
+          <!--<input class="form-control input-append" disabled="disabled" value={{ user.userprofile.email }}>-->
+        <!--</div>-->
+        <!-- /.form-group -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <div class="row">
+      <h6><label><strong>&nbsp&nbsp下方请填写工单对应具体联系人的信息,便于支持人员跟踪处理进度</strong></label></h6>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>联系人</label>
+          <input name="contact" type="text">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>邮箱</label>
+          <input name="email" type="email">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>电话</label>
+          <input name="phone" type="number">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>公司名称</label>
+          <input name="com_name" type="text">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>来源</label>
+          <select name="is_consumer" class="form-control">
+            <option value="1">客户</option>
+            <option>渠道</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-default">
+            <div class="box-header">
+              <h3 class="box-title">正文
+                <small>此处填写详细请求</small>
+              </h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                  <i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                  <i class="fa fa-times"></i></button>
+              </div>
+              <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body pad">
+              <form>
+                    <textarea id="editor1" name="content" rows="10" cols="80">
+                                            请输入...
+                    </textarea>
+              </form>
+            </div>
+          </div>
+          <!-- /.box -->
+      </div>
+    </div>
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleInputFile">附件</label>
+          <input type="file" id="exampleInputFile" style="color:green" name="file">
+          <p class="help-block">请将相关附件打包后上传</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer">
+    <div class="pull-right">
+      <button type="reset" class="btn btn-default">暂存</button>
+      <button type="submit" class="btn btn-primary">提交</button>
+    </div>
+  </div>
+</div>
+</form>
+<!-- /.box -->
+{% endblock %}
+{% block Script %}
+  <!-- FastClick -->
+  <script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/dist/js/demo.js"></script>
+  <!-- CK Editor -->
+  <script src="/static/bower_components/ckeditor/ckeditor.js"></script>
+  <script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1')
+  })
+</script>
+<script>
+  $(document).ready(function(){
+      console.log("")
+    });
+</script>
+{% endblock %}

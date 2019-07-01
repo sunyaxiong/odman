@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.order',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'odman.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,9 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -118,3 +120,62 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    # '/home/syx/workspace/JiajieOMP/src/OMPService/static',
+]
+
+# upload
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
+# Django Suit configuration example
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': 'odman工单系统后台',
+    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
+    # 'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    # 'SEARCH_URL': '/admin/auth/user/',
+    # 'MENU_ICONS': {
+    #    'sites': 'icon-leaf',
+    #    'auth': 'icon-lock',
+    # },
+    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
+    'MENU_EXCLUDE': ('auth.group',),
+    'MENU': (
+        'sites',
+        {'app': 'auth', 'icon': 'icon-lock', 'models': ('user', 'group')},
+        {'app': 'order', 'label': '工单', 'icon': 'icon-cog', 'models': (
+            'Channel', 'Consumer', 'UserProfile', 'WorkOrder', 'OrderAttachFile', 'WorkOrderPool', 'WorkOrderLog'
+        )},
+        # {'label': '同步短信签名与模板', 'icon': 'icon-cog', 'url': '/sms/sync'},
+        # {'app': 'sms', 'label': '查看短信签名与模板', 'icon': 'icon-cog', 'models': ('SmsSignature', "SmsTemplate")},
+        # {'app': 'sms', 'label': '通讯录管理', 'icon': 'icon-cog', 'models': ('AddressBook', 'ContactsFile')},
+        # {'app': 'sms', 'label': '短信管理', 'icon': 'icon-cog', 'models': ('SmsMessage', 'MultiSmsMessage',)},
+        # {'label': '帮助与支持', 'icon': 'icon-question-sign', 'url': '/sms/support'},
+    ),
+
+    # misc
+    # 'LIST_PER_PAGE': 15
+}
+
+# frontend config
+PAGE_LIMIT = 10
+
+
+# email send
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.ecscloud.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'support@ecscloud.com'
+EMAIL_HOST_PASSWORD = 'ECSchin@2016'
+EMAIL_SUBJECT_PREFIX = u'[vstecs.com]'
+EMAIL_USE_TLS = True

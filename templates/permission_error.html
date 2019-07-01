@@ -1,0 +1,29 @@
+{% extends 'starter.html' %}
+{% block Content %}
+<div class="error-page">
+  <h5 class="headline text-yellow"> No</h5>
+
+  <div class="error-content">
+    <h3><i class="fa fa-warning text-yellow"></i> Oops! {{ message }}</h3>
+
+    <p>
+      无法找到您查找的页面.
+      同时, 你可以 <a href="/order/orders/">返回订单列表页</a> 重新检索
+    </p>
+
+{#    <form class="search-form">#}
+{#      <div class="input-group">#}
+{#        <input type="text" name="search" class="form-control" placeholder="Search">#}
+{##}
+{#        <div class="input-group-btn">#}
+{#          <button type="submit" name="submit" class="btn btn-warning btn-flat"><i class="fa fa-search"></i>#}
+{#          </button>#}
+{#        </div>#}
+{#      </div>#}
+{#      <!-- /.input-group -->#}
+{#    </form>#}
+  </div>
+  <!-- /.error-content -->
+</div>
+<!-- /.error-page -->
+{% endblock %}

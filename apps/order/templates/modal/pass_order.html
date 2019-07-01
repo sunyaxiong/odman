@@ -1,0 +1,38 @@
+<div class="modal fade" id="pass-order">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">转交工单</h4><small class="bg-gray-light">确认工单无法处理时，可进行转交</small>
+      </div>
+      <form action="/order/order/{{ work_order.id }}/pass_to/" method="POST">{% csrf_token %}
+      <div class="modal-body">
+        <div class="box-body">
+
+          <div class="form-group">
+            <label>转交给</label>
+            <select class="form-control" name="user_id">
+              {% for i in support_user_list %}
+                <option value={{ i.id }}>{{ i.username }}-{{ i.userprofile.cn_name }}</option>
+              {% endfor %}
+            </select>
+{#            <p class="help-block">请确认表格内容准确</p>#}
+          </div>
+        </div>
+        <!-- /.box-body -->
+
+        <div class="box-footer">
+          <button type="submit" class="btn btn-primary">确定转交</button>
+        </div>
+      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

@@ -1,0 +1,9 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="callout callout-info">
+      <h4>注意：</h4>
+      {{ message }}
+    {#  <a href="http://getbootstrap.com/javascript/#modals">Bootstrap documentation</a>#}
+    </div>
+  {% endfor %}
+{% endif %}

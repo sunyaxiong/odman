@@ -1,0 +1,29 @@
+<!-- Sidebar Menu -->
+<ul class="sidebar-menu" data-widget="tree">
+<li class="header">HEADER</li>
+<!-- Optionally, you can add icons to the links -->
+{% if not user.userprofile.role == 2 %}
+  <li class="active"><a href="/order/order_pool/"><i class="fa fa-shopping-cart"></i><span>工单池</span></a></li>
+{% endif %}
+<li><a href="/order/orders/"><i class="fa fa-file-text"></i> <span>工单管理</span></a></li>
+{% if user.userprofile.role == 1 %}
+  <li><a href="/order/channels/"><i class="fa fa-link"></i> <span>渠道管理</span></a></li>
+  <li><a href="/admin/"><i class="fa fa-link"></i> <span>管理后台</span></a></li>
+{% endif %}
+{% if not user.userprofile.role == 2 %}
+  <li><a href="#"><i class="fa fa-link"></i> <span>统计报表</span></a></li>
+{% endif %}
+{#<li><a href="/order/demo1/"><i class="fa fa-link"></i><span>demo1</span></a></li>#}
+{#<li class="treeview">#}
+{#  <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>#}
+{#    <span class="pull-right-container">#}
+{#        <i class="fa fa-angle-left pull-right"></i>#}
+{#      </span>#}
+{#  </a>#}
+{#  <ul class="treeview-menu">#}
+{#    <li><a href="#">Link in level 2</a></li>#}
+{#    <li><a href="#">Link in level 2</a></li>#}
+{#  </ul>#}
+{#</li>#}
+</ul>
+<!-- /.sidebar-menu -->

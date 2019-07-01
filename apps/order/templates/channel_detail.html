@@ -1,0 +1,109 @@
+{% extends 'starter.html' %}
+{% block Content %}
+<div class="row">
+  <div class="col-md-6">
+
+    <!-- Profile Image -->
+    <div class="box box-primary">
+      <div class="box-body box-profile">
+        <p class="text-muted text-center">{{ user.userprofile.title }}</p>
+        <form action="/order/channel/{{ channel.id }}/update/" method="POST">{% csrf_token %}
+        <ul class="list-group list-group-unbordered">
+          <li class="list-group-item">
+            <b>渠道商名称</b>
+            <a class="pull-right">
+              <label>{{ channel.name }}</label>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>地址</b>
+            <a class="pull-right">
+              <label>{{ channel.address }}</label>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>联系人</b>
+            <a class="pull-right">
+                <label>{{ channel.contact }}</label>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>电话</b>
+            <a class="pull-right">
+                <label>{{ channel.phone }}</label>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>邮箱</b>
+            <a class="pull-right">
+              <label>{{ channel.email }}</label>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>MPN-ID</b>
+            <a class="pull-right">
+              <input name="mpn_ids" disabled="disabled" value={{ channel.mpn_ids }}>
+            </a>
+          </li>
+          <li class="list-group-item">
+            <b>订阅ID</b>
+            <a class="pull-right">
+              <input name="org_ids" value={{ channel.org_ids }}>
+            </a>
+          </li>
+        </ul>
+
+        <button type="submit" class="btn btn-primary btn-block"><b>保存修改</b></button>
+        </form>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+    <!-- About Me Box -->
+{#    <div class="box box-primary">#}
+{#      <div class="box-header with-border">#}
+{#        <h3 class="box-title">About Me</h3>#}
+{#      </div>#}
+{#      <!-- /.box-header -->#}
+{#      <div class="box-body">#}
+{#        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>#}
+{##}
+{#        <p class="text-muted">#}
+{#          B.S. in Computer Science from the University of Tennessee at Knoxville#}
+{#        </p>#}
+{##}
+{#        <hr>#}
+{##}
+{#        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>#}
+{##}
+{#        <p class="text-muted">Malibu, California</p>#}
+{##}
+{#        <hr>#}
+{##}
+{#        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>#}
+{##}
+{#        <p>#}
+{#          <span class="label label-danger">UI Design</span>#}
+{#          <span class="label label-success">Coding</span>#}
+{#          <span class="label label-info">Javascript</span>#}
+{#          <span class="label label-warning">PHP</span>#}
+{#          <span class="label label-primary">Node.js</span>#}
+{#        </p>#}
+{##}
+{#        <hr>#}
+{##}
+{#        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>#}
+{##}
+{#        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>#}
+{#      </div>#}
+{#      <!-- /.box-body -->#}
+{#    </div>#}
+    <!-- /.box -->
+  </div>
+</div>
+{% endblock %}
+{% block Script %}
+  <script src="/static/dist/js/demo.js"></script>
+  <script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
+{% endblock %}

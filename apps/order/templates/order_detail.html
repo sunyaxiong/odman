@@ -1,0 +1,126 @@
+{% extends 'starter.html' %}
+{% block Styles %}
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/static/dist/css/skins/_all-skins.min.css">
+{% endblock %}
+{% block Content %}
+{% include "./modal/end_order.html" %}
+{% include "./modal/pass_order.html" %}
+{% include "./modal/reject_order.html" %}
+<div class="row">
+  <div class="col-md-9">
+    <!-- Box Comment -->
+    <div class="box box-widget">
+      <div class="box-header with-border">
+        <div class="user-block">
+{#          <img class="img-circle" src="/static/dist/img/user1-128x128.jpg" alt="User Image">#}
+          <span class="username"><label>{{ work_order.consumer.contact }}</label></span>
+          <span class="description">{{ user.userprofile.channel.name }} - {{ work_order.consumer.com_name }}
+            {{ work_order.dt_created }} </span>
+          <span class="description">{{ work_order.number }} - {{ work_order.title }} -
+            {{ work_order.get_classify_display }} - {{ work_order.consumer.phone }}</span>
+        </div>
+        <!-- /.user-block -->
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="">
+            状态： <i class="fa fa-circle-o"></i>  &nbsp{{ work_order.get_status_display }}</button>
+{#          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>#}
+{#          </button>#}
+{#          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>#}
+        </div>
+        <!-- /.box-tools -->
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <div>
+          {% autoescape off %}
+            {{ work_order.content }}
+          {% endautoescape %}
+        </div>
+
+        <p>________________________________________________________</p>
+        <p>
+          <label class="label label-default">
+            当前处理人：{{ work_order.processor.userprofile.cn_name }}--{{ work_order.processor.userprofile.phone }}
+          </label>&nbsp
+          <label>
+            首次领取时间：{{ work_order.take_time }}
+          </label>
+        </p>
+        {% for i in att_files %}
+          <a href="/media/{{ i.file }}"><i class="fa fa-share"></i> {{ i.title }}</a>
+        {% endfor %}
+{#        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>#}
+{#        <span class="pull-right text-muted">127 likes - 3 comments</span>#}
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer box-comments">
+        {% for log in process_logs %}
+        <div class="box-comment">
+          <!-- User image -->
+{#          <img class="img-circle img-sm" src="/static/dist/img/user3-128x128.jpg" alt="User Image">#}
+
+          <div class="comment-text">
+                <span class="username">
+                  {{ log.user.username }}
+                  <span class="text-muted pull-right">{{ log.dt_created }}</span>
+                </span><!-- /.username -->
+            {{ log.content }}
+          </div>
+          <!-- /.comment-text -->
+          {% endfor %}
+        </div>
+        <!-- /.box-comment -->
+{#        <div class="box-comment">#}
+{#          <!-- User image -->#}
+{#          <img class="img-circle img-sm" src="/static/dist/img/user4-128x128.jpg" alt="User Image">#}
+{##}
+{#          <div class="comment-text">#}
+{#                <span class="username">#}
+{#                  Luna Stark#}
+{#                  <span class="text-muted pull-right">8:03 PM Today</span>#}
+{#                </span><!-- /.username -->#}
+{#            It is a long established fact that a reader will be distracted#}
+{#            by the readable content of a page when looking at its layout.#}
+{#          </div>#}
+{#          <!-- /.comment-text -->#}
+{#        </div>#}
+        <!-- /.box-comment -->
+      </div>
+      <!-- /.box-footer -->
+      <div class="box-footer">
+        <form action="/order/order/{{ work_order.pk }}/update/" method="POST">{% csrf_token %}
+{#          <img class="img-responsive img-circle img-sm" src="/static/dist/img/user4-128x128.jpg" alt="Alt Text">#}
+          <!-- .img-push is used to add margin to elements next to floating images -->
+          <div class="img-push">
+            <tr><input type="text" class="form-control input-sm"
+                       name="reply" placeholder="Press enter to post comment"><br>
+            <button type="submit" class="btn btn-primary pull-right">提交答复</button>
+          </div>
+        </form>
+        {% if page_info.user.userprofile.role == 1 and work_order.status == 2 %}
+        <div class="row">
+          <div class="col-md-6">
+          <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#end-order">结束工单</button>&nbsp
+          <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#pass-order">转交工单</button>
+          <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#reject-order">驳回工单</button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <!-- /.box-footer -->
+    </div>
+    <!-- /.box -->
+  </div>
+  <!-- /.col -->
+</div>
+{% endblock %}
+{% block Script %}
+  <!-- Slimscroll -->
+  <script src="/static/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- FastClick -->
+  <script src="/static/bower_components/fastclick/lib/fastclick.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/dist/js/demo.js"></script>
+{% endblock %}
