@@ -184,3 +184,4 @@ EMAIL_USE_TLS = True
 # odman conf
 WEB_HOST = "111.13.61.165"
 WEB_PORT = "10001"
+ADMIN_MAIL = "xiaobin.wang@vstecs.com"

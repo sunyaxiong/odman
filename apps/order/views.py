@@ -25,7 +25,7 @@ from .models import Consumer
 from .models import ApplyVerifyCode
 from .forms import RegisterForm, OrderCreatForm
 from lib import excel2
-from odman.settings import PAGE_LIMIT, WEB_HOST, WEB_PORT
+from odman.settings import PAGE_LIMIT, WEB_HOST, WEB_PORT, ADMIN_MAIL
 
 
 def my_login(request):
@@ -106,7 +106,7 @@ def register(request):
                         "账号创建成功，请通过链接激活",
                         content,
                         "support@ecscloud.com",
-                        ["yaxiong.sun@vstecs.com"],   # 佳杰指定管理员邮箱进行激活
+                        [ADMIN_MAIL],   # 佳杰指定管理员邮箱进行激活
                         fail_silently=False
                     )
                 return HttpResponse(
