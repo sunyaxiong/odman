@@ -77,7 +77,7 @@ class UserProfile(BaseModel):
         verbose_name_plural = "用户配置文件"
 
     def __str__(self):
-        return self.user.username
+        return self.user
 
 
 ORDER_STATUS_CHOICE = (

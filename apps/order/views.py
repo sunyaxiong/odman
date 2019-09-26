@@ -29,7 +29,11 @@ from odman.settings import PAGE_LIMIT, WEB_HOST, WEB_PORT, ADMIN_MAIL
 
 
 def my_login(request):
-
+    """
+    自定义登陆函数
+    :param request:
+    :return:
+    """
     if request.method == "GET":
         return render(request, 'login.html', locals())
     if request.method == "POST":
@@ -39,6 +43,8 @@ def my_login(request):
             user = User.objects.get(Q(username=username) | Q(email=username))
         except Exception as e:
             user = None
+            message = "用户不存在或者密码不正确"
+            return render(request, 'login.html', locals())
         # user = authenticate(username=username, password=passwd)
 
         if not user.is_staff:
@@ -87,7 +93,7 @@ def register(request):
                     profile = UserProfile.objects.create(
                         user=user,
                         phone=data.get("phone"),
-                        email=data.get("email"),
+                        email=data.get("email"),   # 邮件提醒： 此邮箱用来接收邮件提醒
                         channel=channel,
                         com_name=data.get("com_name"),
                     )
@@ -196,7 +202,9 @@ def apply_verify_code(request):
 
 @login_required
 def profile_confirm(request, pk):
-
+    """
+        管理员审核确认用户注册申请，审核通过发送邮件提醒，告知用户审核结果
+    """
     try:
         user = User.objects.get(id=pk)
         if not user.is_staff:
@@ -207,7 +215,7 @@ def profile_confirm(request, pk):
                 "账户激活提醒",
                 f"尊敬的 {user.username}: \n 您的账户已经激活，请登陆并访问工单系统： {login_link}",
                 "support@ecscloud.com",
-                [user.userprofile.email],
+                [user.userprofile.email],    # 邮件提醒： 此处email为用户注册时提交
             )
             messages.warning(request, f"用户: {user.username} 已经激活")
         else:
@@ -396,7 +404,7 @@ def order_list(request):
         contacts = paginator.page(paginator.num_pages)
 
     page_info = {
-        "page_header": "工单管理",
+        "page_header": "我的工单",
         "page_des": "",
         "user": request.user,
         "table_title": "工单列表"
@@ -646,3 +654,48 @@ def reject_order(request, pk):
             [order.proposer.userprofile.email]
         )
         return HttpResponseRedirect(f"/order/order/{pk}")
+
+
+@login_required
+def report(request):
+    """
+    月度统计，工单总数=未解决+已解决，计算解决率；
+    工单增长趋势，月度统计
+    工程师处理数量统计；代理商提交单据统计
+    :param request:
+    :return:
+    """
+    work_order_list = WorkOrder.objects.all().exclude(status=0)
+    unsolved_list = work_order_list.exclude(status=4).exclude(status=3)
+    ended_list = work_order_list.exclude(status=1).exclude(status=2)
+
+    profile_list = UserProfile.objects.filter(role=1)
+    user_list = [i.user for i in profile_list]
+    print(dir(user_list[0]))
+    print(user_list[0].processor)
+    user_process_order_info = [{"name": i.username, "y": i.workorder_set.all().count()} for i in user_list]
+    data_list = []
+    for user in user_list:
+        if user.processor:
+            data_list.append(
+                {
+                    "name": user.username,
+                    "y": user.workorder_set.all().count()
+                }
+            )
+
+    result = {
+        "order_total_count": work_order_list.count(),
+        "unsolved_count": unsolved_list.count(),
+        "end_count": ended_list.count(),
+        "resolution_rate": (ended_list.count() / work_order_list.count()) * 100,
+        "data_list": data_list
+    }
+
+    page_info = {
+        "page_header": "报表展示",
+        "page_des": "",
+        "user": request.user,
+        "table_title": ""
+    }
+    return render(request, 'report.html', locals())

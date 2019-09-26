@@ -6,10 +6,10 @@
   <li class="active"><a href="/order/order_pool/"><i class="fa fa-shopping-cart"></i><span>工单池</span></a></li>
   <li><a href="/order/channels/"><i class="fa fa-link"></i> <span>渠道管理</span></a></li>
 {% endif %}
-<li><a href="/order/orders/"><i class="fa fa-file-text"></i> <span>工单管理</span></a></li>
+<li><a href="/order/orders/"><i class="fa fa-file-text"></i> <span>我的工单</span></a></li>
 {% if user.userprofile.role == 0 %}
   <li><a href="/admin/"><i class="fa fa-link"></i> <span>管理后台</span></a></li>
-  <li><a href="#"><i class="fa fa-link"></i> <span>统计报表</span></a></li>
+  <li><a href="/order/report/"><i class="fa fa-link"></i> <span>统计报表</span></a></li>
 {% endif %}
 {#<li><a href="/order/demo1/"><i class="fa fa-link"></i><span>demo1</span></a></li>#}
 {#<li class="treeview">#}

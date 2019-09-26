@@ -32,4 +32,5 @@ urlpatterns = [
     path('import_channel/', views.import_channel),
     path('channel/<int:pk>/', views.channel_detail),
     path('channel/<int:pk>/update/', views.channel_update),
+    path('report/', views.report),
 ]
