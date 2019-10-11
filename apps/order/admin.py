@@ -9,6 +9,7 @@ from .models import WorkOrder
 from .models import OrderAttachFile
 from .models import WorkOrderPool
 from .models import WorkOrderLog
+from .models import SystemConf
 
 
 @admin.register(Channel)
@@ -55,3 +56,13 @@ class WorkOrderPoolAdmin(admin.ModelAdmin):
 @admin.register(WorkOrderLog)
 class WorkOrderLogAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(SystemConf)
+class SystemConfAdmin(admin.ModelAdmin):
+    list_display = ["admin_mail", "service_mail"]
+
+
+# @admin.register(SMTPConf)
+# class SMTPConfAdmin(admin.ModelAdmin):
+#     pass

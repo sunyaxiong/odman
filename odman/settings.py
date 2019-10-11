@@ -156,6 +156,7 @@ SUIT_CONFIG = {
         {'app': 'order', 'label': '工单', 'icon': 'icon-cog', 'models': (
             'Channel', 'Consumer', 'UserProfile', 'WorkOrder', 'OrderAttachFile', 'WorkOrderPool', 'WorkOrderLog'
         )},
+        {'app': "order", 'label': "系统设置", 'icon': 'icon-cog', "models": ('SystemConf',)}
         # {'label': '同步短信签名与模板', 'icon': 'icon-cog', 'url': '/sms/sync'},
         # {'app': 'sms', 'label': '查看短信签名与模板', 'icon': 'icon-cog', 'models': ('SmsSignature', "SmsTemplate")},
         # {'app': 'sms', 'label': '通讯录管理', 'icon': 'icon-cog', 'models': ('AddressBook', 'ContactsFile')},
@@ -183,6 +184,6 @@ EMAIL_USE_TLS = True
 
 
 # odman conf
-WEB_HOST = "111.13.61.165"
+WEB_HOST = "odman.ecscloud.com"
 WEB_PORT = "10001"
 ADMIN_MAIL = "yaxiong.sun@vstecs.com"

@@ -23,6 +23,7 @@ from .models import WorkOrderLog
 from .models import OrderAttachFile
 from .models import Consumer
 from .models import ApplyVerifyCode
+from .models import SystemConf
 from .forms import RegisterForm, OrderCreatForm
 from lib import excel2
 from odman.settings import PAGE_LIMIT, WEB_HOST, WEB_PORT, ADMIN_MAIL
@@ -77,7 +78,8 @@ def register(request):
                 channel = Channel.objects.get(mpn_ids=data.get("mpn_ids"))
             except ObjectDoesNotExist as e:
                 channel = None
-                message = f"MPN-ID验证失败,请联系您的代理商管理员核实MPN-ID"
+                service_mail = SystemConf.objects.filter()[0].service_mail
+                message = f"MPN-ID验证失败,请联系您的代理商管理员核实MPN-ID \n 如有需要，请联系：{service_mail}"
                 return render(request, "register.html", locals())
             # 创建用户
             try:
@@ -99,7 +101,7 @@ def register(request):
                     )
                     # 激活邮件：预留邮箱审核并激活
                     link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/"
-                    content = f"管理员, 您好：\n 工单系统内，代理商：{channel.name}下有用户正在进行注册，请审批\n \
+                    content = f"管理员, 您好：\n 工单系统代理商：{channel.name}下有用户正在进行注册，请审批\n \
                         用户信息如下：\n \
                         用户名： {user.username}\n \
                         电  话： {user.userprofile.phone}\n \
@@ -107,18 +109,19 @@ def register(request):
                         邮  箱： {user.userprofile.com_name}\n \
                         如果确认信息无误，请点击下方链接激活：\n \
                         {link}"
-
+                    admin_mail = SystemConf.objects.filter()[0].admin_mail
                     send_mail(
                         "账号创建成功，请通过链接激活",
                         content,
                         "support@ecscloud.com",
-                        [ADMIN_MAIL],   # 佳杰指定管理员邮箱进行激活
+                        admin_mail.split("\r\n"),   # 佳杰指定管理员邮箱进行激活
                         fail_silently=False
                     )
                 return HttpResponse(
                     "注册成功，已经通知系统管理员进行账户审核，审核通过后会发送通知到您的邮箱，请您耐心等待邮件通知 ！"
                 )
             except Exception as e:
+                print(e)
                 message = "请检查是否用户已存在，若存在可直接登陆。"
                 return render(request, 'register.html', locals())
         else:
@@ -293,18 +296,23 @@ def import_channel(request):
 
         new_create_count = 0
         for i in data:
-            obj, _ = Channel.objects.get_or_create(name=i.get("Partner Name"))
-            if _:
-                try:
-                    mpn_id = int(i.get("MPN-ID").split(".")[0])
-                except ValueError as e:
-                    messages.warning(request, f"{obj.name} 未分配MPN-ID")
-                    mpn_id = None
+            mpn_id_str = i.get("MPN-ID")
+            # 检查表格内mpnid是否存在，为空时message报错
+            if mpn_id_str:
+                mpn_id = int(i.get("MPN-ID").split(".")[0])
+            else:
+                partner_name = i.get('Partner Name')
+                messages.warning(request, f"{partner_name} 未分配MPN-ID,请检查导入数据合规性")
+                return HttpResponseRedirect('/order/channels/')
 
+            # 检查对应mpnid的渠道是否存在是否存在
+            obj, _ = Channel.objects.get_or_create(mpn_ids=mpn_id)
+            if _:
+                obj.name = i.get("Partner Name")
                 obj.address = i.get("Partner 城市")
-                obj.contact = i.get("SA Sales")
-                obj.phone = i.get("phone")
-                obj.email = i.get("email")
+                obj.contact = i.get("代理商联系人")
+                obj.phone = i.get("联系电话").split(".")[0] if i.get("联系电话") else None
+                obj.email = i.get("联系邮箱")
                 obj.mpn_ids = mpn_id
                 obj.save()
                 new_create_count += 1
@@ -451,6 +459,12 @@ def order_update(request, pk):
                 order=order,
                 content=reply,
             )
+            send_mail(
+                "工单处理提醒，请登录系统查看",
+                f"工单：{order.title}, \n新答复：{reply}",
+                "support@ecscloud.com",
+                [order.proposer.userprofile.email]
+            )
         except Exception as e:
             messages.error(request, "处理记录提交失败，请重新提交")
         return HttpResponseRedirect(f"/order/order/{pk}")
@@ -481,6 +495,18 @@ def order_create(request):
                 _timestamp = datetime.datetime.now().strftime("%y%m%d")
                 order.number = f"GD{_timestamp}{_number}"
                 order.save()
+                # 发送提醒
+                content = f"管理员, 您好：\n 工单系统代理商：{request.user.userprofile.channel.name}提交了工单\n \
+                                        工单链接如下：\n \
+                                        http://{WEB_HOST}/order/order/{order.id}\n \
+                                        请及时处理\n \
+                                        "
+                send_mail(
+                    "新工单提醒",
+                    content,
+                    "support@ecscloud.com",
+                    [SystemConf.objects.filter()[0].public_mail]
+                )
             except Exception as e:
                 order = None
                 messages.warning(request, f"创建失败： {e}")
@@ -491,18 +517,19 @@ def order_create(request):
                 WorkOrderPool.objects.create(
                     order=order
                 )
-                OrderAttachFile.objects.create(
-                    order=order,
-                    file=request.FILES.get("file"),
-                    title=request.FILES.get("file").name,
-                )
+                if request.FILES.get("file"):
+                    OrderAttachFile.objects.create(
+                        order=order,
+                        file=request.FILES.get("file"),
+                        title=request.FILES.get("file").name,
+                    )
                 # 判断是否是最终客户
                 is_consumer = 1 if data.get("is_consumer") == "1" else 0
                 consumer, _ = Consumer.objects.get_or_create(
                     phone=data.get("phone"),
                 )
                 if _:
-                    consumer.com_name = data.get("come_name")
+                    consumer.com_name = data.get("com_name")
                     consumer.email = data.get("email")
                     consumer.is_consumer = is_consumer
                     consumer.contact = data.get("contact")

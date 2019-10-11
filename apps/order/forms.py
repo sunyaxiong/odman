@@ -28,9 +28,19 @@ class OrderCreatForm(forms.Form):
     classify = forms.CharField()
     content = forms.Textarea()
     priority = forms.CharField(required=False)
-    file = forms.FileField()
-    com_name = forms.CharField()
-    contact = forms.CharField()
-    email = forms.EmailField()
-    phone = forms.IntegerField()
+    file = forms.FileField(
+        error_messages={"required": "请添加附件"}, required=False
+    )
+    com_name = forms.CharField(
+        error_messages={"required": "请填写公司名称"}
+    )
+    contact = forms.CharField(
+        error_messages={"required": "请填写联系人"}
+    )
+    email = forms.EmailField(
+        error_messages={"required": "请填写邮箱"}
+    )
+    phone = forms.IntegerField(
+        error_messages={"required": "请填写电话"}
+    )
     is_consumer = forms.BooleanField()

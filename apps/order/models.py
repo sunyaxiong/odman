@@ -23,7 +23,7 @@ class Channel(BaseModel):
         verbose_name_plural = "渠道商"
 
     def __str__(self):
-        return self.name
+        return str(self.id)
 
 
 class Consumer(BaseModel):
@@ -77,7 +77,7 @@ class UserProfile(BaseModel):
         verbose_name_plural = "用户配置文件"
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 ORDER_STATUS_CHOICE = (
@@ -213,3 +213,36 @@ class ApplyVerifyCode(BaseModel):
         if not self.code:
             self.code = random.randint(1024, 9999)
         super(self.__class__, self).save()
+
+
+class SystemConf(BaseModel):
+
+    admin_mail = models.TextField("审核邮箱", null=True, blank=True, help_text="此处邮箱接收审核邮件")
+    service_mail = models.EmailField(
+        "客服邮箱", null=True, blank=True, help_text="此邮箱显示在注册失败时"
+    )
+    public_mail = models.EmailField("公共邮箱", null=True, blank=True, help_text="此处邮箱接收新工单提醒")
+
+    class Meta:
+        verbose_name = "系统设置"
+        verbose_name_plural = "系统设置"
+
+    def __str__(self):
+        return "配置详情"
+
+
+# class SMTPConf(BaseModel):
+#
+#     smtp_host = models.CharField("EMAIL_HOST", null=True, blank=True, max_length=128)
+#     smtp_port = models.IntegerField("EMAIL_PORT", null=True, blank=True, default=25)
+#     smtp_user = models.CharField("EMAIL_HOST_USER", null=True, blank=True, max_length=128)
+#     smtp_pass = models.CharField("EMAIL_HOST_PASSWORD", null=True, blank=True, max_length=128)
+#     smtp_prefix = models.CharField("EMAIL_SUBJECT_PREFIX", null=True, blank=True, max_length=128)
+#     smtp_tls = models.BooleanField("EMAIL_USE_TLS", null=True, blank=True, default=True)
+#
+#     class Meta:
+#         verbose_name = "SMTP配置"
+#         verbose_name_plural = "SMTP配置"
+#
+#     def __str__(self):
+#         return "SMTP配置"
