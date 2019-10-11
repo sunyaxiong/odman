@@ -20,6 +20,7 @@
             {{ work_order.dt_created }} </span>
           <span class="description">{{ work_order.number }} - {{ work_order.title }} -
             {{ work_order.get_classify_display }} - {{ work_order.consumer.phone }}</span>
+          <span><strong>实际联系人</strong>： {{ work_order.actual_contact }}</span>
         </div>
         <!-- /.user-block -->
         <div class="box-tools">

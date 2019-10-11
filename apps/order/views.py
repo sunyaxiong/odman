@@ -479,15 +479,18 @@ def order_create(request):
         form = OrderCreatForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.data
+            # 添加实际联系人：实际联系人+content
+            actual_contact = f"{data.get('contact')}-{data.get('phone')}-{data.get('email')}-{data.get('com_name')}"
             # 创建订单
             try:
                 order = WorkOrder(
                     title=data.get("title"),
-                    content=data.get("content"),
+                    content=data.get('content'),
                     status=1,
                     classify=int(data.get("classify")),
                     proposer=request.user,
-                    channel=request.user.userprofile.channel
+                    channel=request.user.userprofile.channel,
+                    actual_contact=actual_contact
                 )
                 order.save()
 
@@ -501,11 +504,13 @@ def order_create(request):
                                         http://{WEB_HOST}/order/order/{order.id}\n \
                                         请及时处理\n \
                                         "
+                # 从系统读取公共邮箱，多个邮箱
+                mail_to_list = SystemConf.objects.filter()[0].public_mail.split("\r\n")
                 send_mail(
                     "新工单提醒",
                     content,
                     "support@ecscloud.com",
-                    [SystemConf.objects.filter()[0].public_mail]
+                    mail_to_list
                 )
             except Exception as e:
                 order = None

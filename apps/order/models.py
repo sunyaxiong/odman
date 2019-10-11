@@ -123,6 +123,7 @@ class WorkOrder(BaseModel):
         on_delete=models.DO_NOTHING, related_name="processor"
     )
     take_time = models.DateTimeField("领取时间", null=True, blank=True)
+    actual_contact = models.CharField("实际联系人", null=True, blank=True, max_length=256)
 
     class Meta:
         verbose_name = "工单"
@@ -221,7 +222,7 @@ class SystemConf(BaseModel):
     service_mail = models.EmailField(
         "客服邮箱", null=True, blank=True, help_text="此邮箱显示在注册失败时"
     )
-    public_mail = models.EmailField("公共邮箱", null=True, blank=True, help_text="此处邮箱接收新工单提醒")
+    public_mail = models.TextField("公共邮箱", null=True, blank=True, help_text="此处邮箱接收新工单提醒")
 
     class Meta:
         verbose_name = "系统设置"
