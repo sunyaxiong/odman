@@ -147,7 +147,7 @@ MEDIA_URL = '/media/'
 # Django Suit configuration example
 SUIT_CONFIG = {
     # header
-    'ADMIN_NAME': 'odman工单系统后台',
+    'ADMIN_NAME': 'Azure工单系统后台',
     # 'HEADER_DATE_FORMAT': 'l, j. F Y',
     # 'HEADER_TIME_FORMAT': 'H:i',
 

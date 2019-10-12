@@ -100,7 +100,8 @@ def register(request):
                         com_name=data.get("com_name"),
                     )
                     # 激活邮件：预留邮箱审核并激活
-                    link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/"
+                    # link = f"http://{WEB_HOST}:{WEB_PORT}/profile/{user.id}/"
+                    link = f"http://{WEB_HOST}/profile/{user.id}/"
                     content = f"管理员, 您好：\n 工单系统代理商：{channel.name}下有用户正在进行注册，请审批\n \
                         用户信息如下：\n \
                         用户名： {user.username}\n \
@@ -213,7 +214,8 @@ def profile_confirm(request, pk):
         if not user.is_staff:
             user.is_staff = 1
             user.save()
-            login_link = f"http://{WEB_HOST}:{WEB_PORT}/accounts/login"
+            # login_link = f"http://{WEB_HOST}:{WEB_PORT}/accounts/login"
+            login_link = f"http://{WEB_HOST}/accounts/login"
             send_mail(
                 "账户激活提醒",
                 f"尊敬的 {user.username}: \n 您的账户已经激活，请登陆并访问工单系统： {login_link}",
