@@ -77,10 +77,21 @@ WSGI_APPLICATION = 'odman.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'odman',
+        'USER': 'odman@odmandb',
+        'PASSWORD': 'Admin@db.com',
+        'HOST': 'odmandb.mysql.database.chinacloudapi.cn',
+        'PORT': '3306',
     }
 }
 
