@@ -437,6 +437,9 @@ def order_detail(request, pk):
         "page_des": "",
         "user": request.user,
     }
+    # 超管权限
+    if request.user.userprofile.role == 0:
+        return render(request, "order_detail.html", locals())
 
     # 请求人或者处理人可以看到工单
     if not (request.user == work_order.proposer or request.user == work_order.processor):
@@ -717,12 +720,15 @@ def report(request):
                     "y": user.workorder_set.all().count()
                 }
             )
-
+    try:
+        resolution_rate = (ended_list.count() / work_order_list.count()) * 100
+    except Exception as e:
+        resolution_rate = 0
     result = {
         "order_total_count": work_order_list.count(),
         "unsolved_count": unsolved_list.count(),
         "end_count": ended_list.count(),
-        "resolution_rate": (ended_list.count() / work_order_list.count()) * 100,
+        "resolution_rate": resolution_rate,
         "data_list": data_list
     }
 
