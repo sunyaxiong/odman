@@ -197,6 +197,6 @@ EMAIL_USE_TLS = True
 
 
 # odman conf
-WEB_HOST = "odman.ecscloud.com"
+WEB_HOST = "gd.ecscloud.com"
 WEB_PORT = "10001"
 ADMIN_MAIL = "yaxiong.sun@vstecs.com"
