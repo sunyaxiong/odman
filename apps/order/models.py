@@ -138,7 +138,6 @@ def order_file_upload_to(instance, filename):
     content_hash = sha1(content).hexdigest()
     suffix = filename.split('.')[-1]
     args = [
-            settings.MEDIA_ROOT,
             'order_files',
             '%s.%s' % (content_hash, suffix),
             ]

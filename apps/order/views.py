@@ -60,7 +60,6 @@ def my_login(request):
         return HttpResponseRedirect('/order/orders/')
 
 
-
 def my_logout(request):
     logout(request)
 
