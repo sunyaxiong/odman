@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: self-hosted1
 
     steps:
     - name: mkdir ook
