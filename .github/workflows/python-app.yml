@@ -15,12 +15,11 @@ jobs:
     runs-on: runner1
 
     steps:
-    - uses: actions/checkout@v1
-#    - name: git pull odman
-#      run: |
-#        pwd
-#        cd odman/odman
-#        git pull
+#    - uses: actions/checkout@v1
+    - name: git pull odman
+      run: |
+        pwd
+        if [ ! -d "odman" ]; then git clone https://github.com/sunyaxiong/odman.git else cd odman/odman&&git pull fi
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
 #      with:
