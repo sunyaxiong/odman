@@ -19,7 +19,11 @@ jobs:
     - name: git pull odman
       run: |
         pwd
-        if [ ! -d "odman" ]; then git clone https://github.com/sunyaxiong/odman.git else cd odman/odman&&git pull fi
+        if [ ! -d "odman/odman" ]; then
+          git clone https://github.com/sunyaxiong/odman.git
+        else
+          cd odman/odman&&git pull
+        fi
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
 #      with:
