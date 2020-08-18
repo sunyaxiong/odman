@@ -16,9 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: git pull odman
-      run: |
-        git clone https://github.com/sunyaxiong/odman.git
+#    - name: git pull odman
+#      run: |
+#        git clone https://github.com/sunyaxiong/odman.git
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
 #      with:
