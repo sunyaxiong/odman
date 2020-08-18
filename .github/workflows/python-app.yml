@@ -19,7 +19,7 @@ jobs:
       run: |
         echo "mkdir"
         mkdir ook
-    - uses: actions/dbman@master
+    - uses: sunyaxiong/dbman@master
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
 #      with:
