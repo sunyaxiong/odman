@@ -15,10 +15,10 @@ jobs:
     runs-on: runner1
 
     steps:
+    - uses: actions/checkout@v2
     - name: git pull odman
       run: |
         git clone https://github.com/sunyaxiong/odman.git
-    - uses: actions/checkout@v2
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
 #      with:
