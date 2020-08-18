@@ -16,9 +16,10 @@ jobs:
 
     steps:
 #    - uses: actions/checkout@v1
-#    - name: git pull odman
-#      run: |
-#        pwd
+    - name: git pull odman
+      run: |
+        pwd
+        git pull https://github.com/sunyaxiong/odman.git
 #        if [ ! -d "/home/ec2-user/actions-runner/_work/odman" ]; then
 #        git clone https://github.com/sunyaxiong/odman.git; else cd /home/ec2-user/actions-runner/_work/odman&&git pull; fi
 #    - name: Set up Python 3.8
