@@ -586,6 +586,7 @@ def order_pool_list(request):
         # page超出整数范围，返回最后一页
         contacts = paginator.page(paginator.num_pages)
 
+    print(11)
     page_info = {
         "page_header": "工单池管理",
         "page_des": "",
