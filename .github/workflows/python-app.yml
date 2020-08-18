@@ -18,7 +18,7 @@ jobs:
 #    - uses: actions/checkout@v1
     - name: git pull odman
       run: |
-        cd odman
+        cd odman/odman
         git pull
 #    - name: Set up Python 3.8
 #      uses: actions/setup-python@v2
