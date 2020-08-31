@@ -1,4 +1,4 @@
-FROM alpine:3.7.9-alpine3.12
+FROM python:3.7.9-alpine3.12
 MAINTAINER sunyaxiong <yaxiong.sun@vstecs.com>
 
 EXPOSE 4000
@@ -8,8 +8,7 @@ COPY ./* /data/
 
 RUN echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main" > /etc/apk/repositories && \
 apk add --update \
-    gcc \
-
+    gcc && \
 WORKDIR /data/
 
 CMD ["python" , "manage.py", "runserver", "0.0.0.0:8080"]
