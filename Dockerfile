@@ -9,6 +9,7 @@ COPY ./* /data/
 RUN echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main" > /etc/apk/repositories && \
 apk add --update \
     gcc && \
+mkdir /data/
 WORKDIR /data/
 
 CMD ["python" , "manage.py", "runserver", "0.0.0.0:8080"]
